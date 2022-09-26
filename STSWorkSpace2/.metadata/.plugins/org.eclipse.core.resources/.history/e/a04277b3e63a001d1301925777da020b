@@ -1,0 +1,67 @@
+package com.test.demo;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.mysql.cj.jdbc.Driver;
+import java.util.Properties;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+@Controller
+public class Demo {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Demo.class);
+	
+	@RequestMapping(value = "/")
+	public String ShowLogin() throws SQLException {
+		Driver driver =new com.mysql.cj.jdbc.Driver();
+		String url="jdbc:mysql://localhost:3306/LoginTestUser?useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true";
+		Properties info =new Properties();
+		info.put("user", "root");
+		info.put("password", "123456");
+		Connection conn = (Connection) driver.connect(url, info);
+		System.out.println(conn);
+		return "login";
+	}
+	
+	// 点击login时触发
+	@RequestMapping(value="/loginOn", method=RequestMethod.POST)
+	public ModelAndView Login(HttpServletRequest request, ModelAndView view)
+	{
+		logger.info("======================================");
+		System.out.print("Start");
+		String name = request.getParameter("username");
+		String password = request.getParameter("password");
+		// 不要用 name == "lucy",结果会是不相等
+		if (name.equals("lucy")) {
+			logger.info("username is lucy");
+			view.setViewName("redirect:/loginOn");
+		}
+		else {
+			logger.info("username is not lucy");
+			view.setViewName("redirect:/");
+		}
+		
+		return view;
+	}
+
+	
+	@RequestMapping(value="/loginOn") 
+	public ModelAndView ShowLoginOn(ModelAndView view) 
+	{ 
+		logger.info("====================Move to login on==================");
+		System.out.print("123");
+		view.setViewName("loginOn"); 
+		return view; 
+	}
+	 
+
+}

@@ -1,0 +1,5 @@
+package com.free.service;
+
+public class UserService {
+
+}

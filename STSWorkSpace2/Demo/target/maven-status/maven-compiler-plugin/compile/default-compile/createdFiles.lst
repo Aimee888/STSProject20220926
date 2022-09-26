@@ -1,0 +1,5 @@
+com\free\service\UserService.class
+com\free\entity\User.class
+com\free\service\UserServiceImpl.class
+com\free\dao\UserDao.class
+com\test\demo\Demo.class
